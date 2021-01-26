@@ -49,7 +49,7 @@ class Organization(models.Model):
 def update_organization(sender, instance, created, **kwargs):
     if created:
         Organization.objects.create(user=instance)
-    instance.organization.save()
+    instance.Organization.save()
 
 class Donor(models.Model):
 
@@ -74,7 +74,7 @@ class Donor(models.Model):
 def update_donor(sender, instance, created, **kwargs):
     if created:
         Donor.objects.create(user=instance)
-    instance.donor.save()
+    instance.Donor.save()
 
 
 class DonorRecipient(models.Model):
@@ -136,4 +136,4 @@ class DonorRecipient(models.Model):
 def update_donor_recipient(sender, instance, created, **kwargs):
     if created:
         DonorRecipient.objects.create(user=instance)
-    instance.donorrecipient.save()
+    instance.DonorRecipient.save()
