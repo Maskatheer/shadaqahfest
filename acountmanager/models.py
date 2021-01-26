@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 # Create your models here.
 
 class User(AbstractUser):
@@ -43,6 +45,12 @@ class Organization(models.Model):
     status = models.CharField(
         choices=STATUS, max_length=20, default='unverified')
 
+@receiver(post_save, sender = User)
+def update_organization(sender, instance, created, **kwargs):
+    if created:
+        Organization.objects.create(user=instance)
+    instance.organization.save()
+
 class Donor(models.Model):
 
     STATUS = (
@@ -60,6 +68,13 @@ class Donor(models.Model):
     phone_number = models.CharField(max_length=16, blank=True, null=True)
     status = models.CharField(
         choices=STATUS, max_length=20, default='unverified')
+
+
+@receiver(post_save, sender=User)
+def update_donor(sender, instance, created, **kwargs):
+    if created:
+        Donor.objects.create(user=instance)
+    instance.donor.save()
 
 
 class DonorRecipient(models.Model):
@@ -117,4 +132,8 @@ class DonorRecipient(models.Model):
     status = models.CharField(max_length=20, choices=STATUS, default = 'unverified')
     
 
-
+@receiver(post_save, sender=User)
+def update_donor_recipient(sender, instance, created, **kwargs):
+    if created:
+        DonorRecipient.objects.create(user=instance)
+    instance.donorrecipient.save()
