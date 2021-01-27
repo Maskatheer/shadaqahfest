@@ -45,11 +45,8 @@ class Organization(models.Model):
     status = models.CharField(
         choices=STATUS, max_length=20, default='unverified')
 
-@receiver(post_save, sender = User)
-def update_organization(sender, instance, created, **kwargs):
-    if created:
-        Organization.objects.create(user=instance)
-    instance.Organization.save()
+    def __str__(self):
+        return self.organization_name
 
 class Donor(models.Model):
 
@@ -69,13 +66,8 @@ class Donor(models.Model):
     status = models.CharField(
         choices=STATUS, max_length=20, default='unverified')
 
-
-@receiver(post_save, sender=User)
-def update_donor(sender, instance, created, **kwargs):
-    if created:
-        Donor.objects.create(user=instance)
-    instance.Donor.save()
-
+    def __str__(self):
+        return self.user.username
 
 class DonorRecipient(models.Model):
 
@@ -131,9 +123,5 @@ class DonorRecipient(models.Model):
     pengeluaran_per_bulan = models.IntegerField()
     status = models.CharField(max_length=20, choices=STATUS, default = 'unverified')
     
-
-@receiver(post_save, sender=User)
-def update_donor_recipient(sender, instance, created, **kwargs):
-    if created:
-        DonorRecipient.objects.create(user=instance)
-    instance.DonorRecipient.save()
+    def __str__(self):
+        return self.user.username
