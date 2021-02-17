@@ -18,11 +18,12 @@ from django.urls import path, include
 
 from .views import index
 from donation.views import browse_view
-from acountmanager.views import login_view, profile, register_view
+from acountmanager.views import login_view, profile, register_view, logout_view
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('login/', login_view, name='login'),
+    path('logout/', logout_view, name='logout'),
     path('profile/', profile, name='profile'),
     path('register/', include('acountmanager.urls'), name='register'),
     path('home/', browse_view, name='home'),
