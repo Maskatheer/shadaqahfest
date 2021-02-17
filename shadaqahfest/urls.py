@@ -17,12 +17,14 @@ from django.contrib import admin
 from django.urls import path, include
 
 from .views import index
-from acountmanager.views import login, profile, register
+from donation.views import browse_view
+from acountmanager.views import login_view, profile, register_view
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('login/', login, name='login'),
+    path('login/', login_view, name='login'),
     path('profile/', profile, name='profile'),
     path('register/', include('acountmanager.urls'), name='register'),
-    path('', index, name='home')
+    path('home/', browse_view, name='home'),
+    path('', index, name='landingpage')
 ]
