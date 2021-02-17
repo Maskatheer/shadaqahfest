@@ -5,16 +5,7 @@ from django.dispatch import receiver
 # Create your models here.
 
 class User(AbstractUser):
-    DONOR = 1
-    ORGANIZATION = 2
-    RECIPIENT = 3
-
-    ROLE_CHOICES = (
-        (DONOR, 'Donor'),
-        (ORGANIZATION, 'Organization'),
-        (RECIPIENT, 'Recipient'),
-    )
-    role = models.PositiveSmallIntegerField(choices=ROLE_CHOICES)
+    pass
     
 
 class Organization(models.Model):
