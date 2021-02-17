@@ -2,7 +2,15 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from acountmanager.models import User
 
-class OrganizationRegForm(UserCreationForm):
+
+class LoginForm(forms.Form):
+
+    username = forms.CharField()
+    password = forms.CharField(widget=forms.PasswordInput)
+
+
+
+class OrganizationRegForm(forms.Form):
 
     TYPE_ORG = (
         ('Masjid', 'Masjid / Mosque'),
@@ -26,8 +34,8 @@ class OrganizationRegForm(UserCreationForm):
     telephone = forms.CharField(help_text='Office Number')
     handphone = forms.CharField(help_text='Handphone')
     type_organization = forms.ChoiceField(choices=TYPE_ORG, required=False)
-    description = forms.TextField()
+    description = forms.TextInput()
 
     class Meta:
         model = User
-        field = ('username', 'email', 'organization_name', 'ktp_id', 'type_organization', 'address', 'telephone', 'description','password1', 'password2')
+        fields = ('username', 'email', 'organization_name', 'ktp_id', 'type_organization', 'address', 'telephone', 'description','password1', 'password2')
