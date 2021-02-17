@@ -8,5 +8,10 @@
 </head>
 <body>
     <h1>Home</h1>
+    <h2>
+    {% if user.is_authenticated %}
+        {{user.username}}
+    {% endif %}
+        </h2>
 </body>
 </html>
