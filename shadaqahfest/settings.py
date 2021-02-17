@@ -125,3 +125,4 @@ STATIC_URL = '/static/'
 AUTH_USER_MODEL  = 'acountmanager.User'
 
 LOGIN_REDIRECT_URL = 'home'
+LOGOUT_REDIRECT_URL = 'home'

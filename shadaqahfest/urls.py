@@ -19,11 +19,11 @@ from django.urls import path, include
 from .views import index
 from donation.views import browse_view
 from acountmanager.views import login_view, profile, register_view, logout_view
-
+from django.contrib.auth.views import LoginView, LogoutView
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('login/', login_view, name='login'),
-    path('logout/', logout_view, name='logout'),
+    path('login/', LoginView.as_view(), name='login'),
+    path('logout/', LogoutView.as_view(), name='logout'),
     path('profile/', profile, name='profile'),
     path('register/', include('acountmanager.urls'), name='register'),
     path('home/', browse_view, name='home'),
