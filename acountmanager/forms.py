@@ -1,12 +1,15 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-from acountmanager.models import User
+from django.contrib.auth import password_validation
+from django.core.exceptions import ValidationError
 
+from acountmanager.models import User
 
 class LoginForm(forms.Form):
 
     username = forms.CharField()
     password = forms.CharField(widget=forms.PasswordInput)
+
 
 
 
@@ -27,15 +30,67 @@ class OrganizationRegForm(forms.Form):
         ('Other', 'Other'),
     )
 
-    organization_name = forms.CharField(help_text='Required')
-    address = forms.CharField(help_text='Address')
-    latitude_longitude = forms.CharField(help_text='Latitude Longitude')
-    ktp_id = forms.CharField(help_text='Required for activation')
+    organization_name = forms.CharField(help_text='Required', required=True)
+    organization_username = forms.CharField(
+        help_text='Required', required=True)
+    address = forms.CharField(help_text='Address', required=True)
+    latitude_longitude = forms.CharField(help_text='Latitude Longitude', required=False)
+    ktp_id = forms.CharField(
+        help_text='Required for activation', required=True)
     telephone = forms.CharField(help_text='Office Number')
-    handphone = forms.CharField(help_text='Handphone')
+    handphone = forms.CharField(help_text='Handphone', required=True)
     type_organization = forms.ChoiceField(choices=TYPE_ORG, required=False)
     description = forms.TextInput()
 
     class Meta:
         model = User
         fields = ('username', 'email', 'organization_name', 'ktp_id', 'type_organization', 'address', 'telephone', 'description','password1', 'password2')
+
+
+
+class IndividualRegForm(forms.Form):
+
+    email = forms.EmailField(help_text='Email Text', required='True')
+    username = forms.CharField(help_text='Username', required='True')
+    full_name = forms.CharField(help_text='Your Real Name', required='True')
+    password1 = forms.CharField(label="Password",
+                                strip=False,
+                                widget=forms.PasswordInput(
+                                    attrs={'autocomplete': 'new-password'}),
+                                help_text=password_validation.password_validators_help_text_html(),)
+    password2 = forms.CharField(label="Password confirmation",
+                                widget=forms.PasswordInput(
+                                    attrs={'autocomplete': 'new-password'}),
+                                strip=False,
+                                help_text="Enter the same password as before, for verification.")
+
+    error_messages = {
+        'password_mismatch':'The two password fields didn’t match.',
+        'username_taken': 'Username already taken, please use other.',
+    }
+
+    def clean_username(self):
+        username = self.cleaned_data.get("username")
+        exist_user_with_username = User.objects.get(username=username)
+
+        if exist_user_with_username != None:
+            raise ValidationError(
+                self.error_messages['username_taken'], 
+                code='username_taken',
+            )
+        return username
+
+    def clean_password2(self):
+        password1 = self.cleaned_data.get("password1")
+        password2 = self.cleaned_data.get("password2")
+        if password1 and password2 and password1 != password2:
+            raise ValidationError(
+                self.error_messages['password_mismatch'],
+                code='password_mismatch',
+            )
+        return password2
+
+
+
+
+
