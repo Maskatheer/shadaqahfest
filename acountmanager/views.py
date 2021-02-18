@@ -3,7 +3,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.views import LoginView
 
 from .forms import LoginForm, IndividualRegForm, OrganizationRegForm
-
+from .models import User, Organization, Donor
 # Create your views here.
 def login_view(request):
     context = {
@@ -55,6 +55,24 @@ def register_recipient(request):
 def register_donor(request):
     if request.method == 'POST':
         form = IndividualRegForm(request.POST)
+        print('preketek')
+        if form.is_valid():
+            print('valid')
+            username = form.cleaned_data['username']
+            email = form.cleaned_data['email']
+            full_name = form.cleaned_data['full_name']
+            password1 = form.cleaned_data['password1']
+            new_user = User.objects.create(username = username, email=email, password=password1)
+            new_donor = Donor.objects.create(user=new_user)
+            print('berhasil')
+            login(request, new_user)
+            return redirect('home')
+        else:
+            form = IndividualRegForm(request.POST)
+            context = {
+                'form': form
+            }
+            return render(request, 'register_donor.html', context=context)
     else:
         form = IndividualRegForm()
         context = {
