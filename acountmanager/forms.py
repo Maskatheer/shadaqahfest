@@ -71,11 +71,14 @@ class IndividualRegForm(forms.Form):
 
     def clean_username(self):
         username = self.cleaned_data.get("username")
-        exist_user_with_username = User.objects.get(username=username)
+        exist_user_with_username = User.objects.filter(username=username)
 
-        if exist_user_with_username != None:
+        if len(exist_user_with_username) == 0:
+            pass
+        else:
+            print(exist_user_with_username)
             raise ValidationError(
-                self.error_messages['username_taken'], 
+                self.error_messages['username_taken'],
                 code='username_taken',
             )
         return username
