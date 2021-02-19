@@ -41,6 +41,39 @@ def register_view(request):
 def register_organization(request):
     if request.method == 'POST':
         form = OrganizationRegForm(request.POST)
+        if form.is_valid():
+            # form.save(commit=False)
+            # form.username=form.cleaned_data['organization_username']
+            email = form.cleaned_data['email']
+            username = form.cleaned_data['username']
+            password1 = form.cleaned_data['password1']
+            new_user = User.objects.create(username=username, email=email, password=password1)
+            organization_name = form.cleaned_data['organization_name']
+            address = form.cleaned_data['address']
+            ktp_id = form.cleaned_data['ktp_id']
+            telephone = form.cleaned_data['telephone']
+            handphone = form.cleaned_data['handphone']
+            type_organization = form.cleaned_data['type_organization']
+            description = form.cleaned_data['description']
+            
+            new_organization = Organization.objects.create(
+                user = new_user,
+                organization_name = organization_name,
+                address = address,
+                ktp_in_charge = ktp_id, 
+                telephone = telephone,
+                handphone = handphone,
+                type_organization = type_organization,
+                description = description
+            )
+            login(request, new_user)
+            return redirect('home')
+        else:
+            form = OrganizationRegForm(request.POST, initial=request.POST)
+            context = {
+                'form': form
+            }
+            return render(request, 'register_org.html', context=context)
     else:
         form = OrganizationRegForm()
         context = {
