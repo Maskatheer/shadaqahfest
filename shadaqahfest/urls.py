@@ -22,7 +22,7 @@ from acountmanager.views import login_view, profile, register_view, logout_view
 from django.contrib.auth.views import LoginView, LogoutView
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('login/', LoginView.as_view(), name='login'),
+    path('login/', LoginView.as_view(redirect_authenticated_user=True), name='login'),
     path('logout/', LogoutView.as_view(), name='logout'),
     path('profile/', profile, name='profile'),
     path('register/', include('acountmanager.urls'), name='register'),
