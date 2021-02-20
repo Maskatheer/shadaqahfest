@@ -27,5 +27,6 @@ urlpatterns = [
     path('profile/', profile, name='profile'),
     path('register/', include('acountmanager.urls'), name='register'),
     path('home/', browse_view, name='home'),
+    path('accounts/', include('allauth.urls')),
     path('', index, name='landingpage')
 ]
