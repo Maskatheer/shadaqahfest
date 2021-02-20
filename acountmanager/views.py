@@ -6,12 +6,7 @@ from .forms import LoginForm, IndividualRegForm, OrganizationRegForm
 from .models import User, Organization, Donor
 
 # Create your views here.
-def login_view(request):
 
-    if request.user.is_authenticated:
-        return redirect('home')
-    else:
-        return LoginView.as_view()
     
 
 def logout_view(request):

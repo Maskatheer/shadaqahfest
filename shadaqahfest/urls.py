@@ -18,7 +18,7 @@ from django.urls import path, include
 
 from .views import index
 from donation.views import browse_view
-from acountmanager.views import login_view, profile, register_view, logout_view
+from acountmanager.views import profile, register_view, logout_view
 from django.contrib.auth.views import LoginView, LogoutView
 urlpatterns = [
     path('admin/', admin.site.urls),
